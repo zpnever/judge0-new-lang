@@ -1,8 +1,10 @@
 # Install Node.js 20.9.0
 ENV NODE_VERSION 20.9.0
-RUN set -xe && \
-    curl -fsSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz -o /tmp/node.tar.gz && \
-    tar -xzf /tmp/node.tar.gz -C /usr/local --strip-components=1 && \
-    rm -f /tmp/node.tar.gz && \
-    node --version && \
-    npm --version
+RUN mkdir -p /tmp/node && \
+    wget -q https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz -O /tmp/node/node.tar.xz && \
+    mkdir -p /usr/local/lib/nodejs && \
+    tar -xJf /tmp/node/node.tar.xz -C /usr/local/lib/nodejs && \
+    ln -s /usr/local/lib/nodejs/node-v${NODE_VERSION}-linux-x64/bin/node /usr/local/bin/node && \
+    ln -s /usr/local/lib/nodejs/node-v${NODE_VERSION}-linux-x64/bin/npm /usr/local/bin/npm && \
+    ln -s /usr/local/lib/nodejs/node-v${NODE_VERSION}-linux-x64/bin/npx /usr/local/bin/npx && \
+    rm -rf /tmp/node
