@@ -1,2 +1,8 @@
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs
+# Install Node.js 20.9.0
+ENV NODE_VERSION 20.9.0
+RUN set -xe && \
+    curl -fsSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz -o /tmp/node.tar.gz && \
+    tar -xzf /tmp/node.tar.gz -C /usr/local --strip-components=1 && \
+    rm -f /tmp/node.tar.gz && \
+    node --version && \
+    npm --version
