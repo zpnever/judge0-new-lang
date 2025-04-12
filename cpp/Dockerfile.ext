@@ -1,2 +1,29 @@
-# Gunakan g++ versi default yang tersedia
-RUN apt-get update && apt-get install -y g++
+# Install GCC 13.2.0
+ENV GCC_VERSION 13.2.0
+RUN set -xe && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        wget \
+        bzip2 \
+        file \
+        make \
+        libc6-dev \
+        libgmp-dev \
+        libmpc-dev \
+        libmpfr-dev && \
+    wget -q https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.gz -O /tmp/gcc.tar.gz && \
+    mkdir -p /usr/src/gcc && \
+    tar -xf /tmp/gcc.tar.gz -C /usr/src/gcc --strip-components=1 && \
+    cd /usr/src/gcc && \
+    ./contrib/download_prerequisites && \
+    mkdir build && cd build && \
+    ../configure --disable-multilib --enable-languages=c,c++ && \
+    make -j$(nproc) && \
+    make install && \
+    ln -s /usr/local/bin/g++ /usr/local/bin/g++-13 && \
+    ln -s /usr/local/bin/gcc /usr/local/bin/gcc-13 && \
+    rm -rf /tmp/gcc.tar.gz /usr/src/gcc && \
+    g++-13 --version && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
