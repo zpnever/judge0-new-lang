@@ -1,8 +1,28 @@
-[
-  {
-    "name": "Python (3.12.0)",
-    "is_archived": false,
-    "source_file": "script.py",
-    "run_cmd": "/usr/local/bin/python3.12 script.py"
-  }
-]
+# Install Python 3.12.0
+ENV PYTHON_VERSION 3.12.0
+RUN set -xe && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        libffi-dev \
+        libssl-dev \
+        zlib1g-dev \
+        libbz2-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        wget \
+        ca-certificates \
+        tk-dev && \
+    curl -fSsL "https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz" -o /tmp/python.tgz && \
+    mkdir -p /usr/src/python && \
+    tar -xzf /tmp/python.tgz -C /usr/src/python --strip-components=1 && \
+    cd /usr/src/python && \
+    ./configure --enable-optimizations && \
+    make -j$(nproc) && \
+    make install && \
+    rm -rf /tmp/python.tgz /usr/src/python && \
+    python3.12 --version && \
+    pip3.12 install --upgrade pip && \
+    pip3.12 --version && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
