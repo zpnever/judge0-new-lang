@@ -1,0 +1,24 @@
+# Install Julia for Computational Modeling Challenge
+
+
+RUN mkdir -p /tmp/julia
+RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.2-linux-x86_64.tar.gz -P /tmp/julia
+RUN wget https://julialang-s3.julialang.org/bin/checksums/julia-1.10.2.sha256 -P /tmp/julia
+RUN echo "$(sha256sum /tmp/julia/julia-1.10.2-linux-x86_64.tar.gz)" | xargs printf '%s %s' "$1" "$2" | sha256sum --check
+RUN sudo tar xfvz /tmp/julia/julia-1.10.2-linux-x86_64.tar.gz --directory /usr/local
+RUN ls /usr/local/julia-1.10.2  # Provjera da postoji
+RUN rm -rf /tmp/julia
+
+ENV JULIA_DEPOT_PATH /usr/local/lib/.julia
+ENV JULIA_HOME /usr/local/julia-1.10.2
+ENV JULIA_EXE $JULIA_HOME/bin/julia
+
+RUN sudo mkdir -p ${JULIA_DEPOT_PATH}
+RUN sudo chown -R judge0:judge0 ${JULIA_DEPOT_PATH}
+RUN $JULIA_HOME/bin/julia -e 'import Pkg; Pkg.add("FileIO")' && \
+        $JULIA_HOME/bin/julia -e 'import Pkg; Pkg.add("ImageIO")' && \
+        $JULIA_HOME/bin/julia -e 'import Pkg; Pkg.add("PNGFiles")' && \
+        $JULIA_HOME/bin/julia -e 'import Pkg; Pkg.add("Measures")' && \
+        $JULIA_HOME/bin/julia -e 'import Pkg; Pkg.add("Plots")' && \
+        $JULIA_HOME/bin/julia -e 'import Pkg; Pkg.add("UUIDs")' && \
+        $JULIA_HOME/bin/julia -e 'import Pkg; Pkg.instantiate()'

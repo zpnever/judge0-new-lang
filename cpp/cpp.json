@@ -1,0 +1,9 @@
+[
+  {
+    "name": "C++ (GCC 13)",
+    "source_file": "main.cpp",
+    "compile_cmd": "g++ -o main main.cpp",
+    "run_cmd": "./main",
+    "is_archived": false
+  }
+]

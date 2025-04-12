@@ -1,0 +1,2 @@
+# Gunakan g++ versi default yang tersedia
+RUN apt-get update && apt-get install -y g++

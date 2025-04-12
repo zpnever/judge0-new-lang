@@ -1,0 +1,8 @@
+[
+	{
+		"name": "JavaScript (Node.js 20)",
+		"source_file": "main.js",
+		"run_cmd": "node main.js",
+		"is_archived": false
+	}
+]
