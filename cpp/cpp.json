@@ -1,9 +1,9 @@
 [
   {
-    "name": "C++ (GCC 13)",
+    "name": "C++ (GCC 13.2.0)",
+    "is_archived": false,
     "source_file": "main.cpp",
-    "compile_cmd": "g++ -o main main.cpp",
-    "run_cmd": "./main",
-    "is_archived": false
+    "compile_cmd": "/usr/local/bin/g++-13 %s main.cpp -o a.out -Wall -std=c++20 -O2",
+    "run_cmd": "./a.out"
   }
 ]
