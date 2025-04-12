@@ -1,29 +1,16 @@
-# Install GCC 13.2.0
+# Install GCC 13
 ENV GCC_VERSION 13.2.0
-RUN set -xe && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        wget \
-        bzip2 \
-        file \
-        make \
-        libc6-dev \
-        libgmp-dev \
-        libmpc-dev \
-        libmpfr-dev && \
-    wget -q https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.gz -O /tmp/gcc.tar.gz && \
-    mkdir -p /usr/src/gcc && \
-    tar -xf /tmp/gcc.tar.gz -C /usr/src/gcc --strip-components=1 && \
-    cd /usr/src/gcc && \
+RUN mkdir -p /tmp/gcc && \
+    wget -q https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.gz -O /tmp/gcc/gcc.tar.gz && \
+    mkdir -p /usr/local/gcc-src && \
+    tar -xzf /tmp/gcc/gcc.tar.gz -C /usr/local/gcc-src --strip-components=1 && \
+    cd /usr/local/gcc-src && \
     ./contrib/download_prerequisites && \
-    mkdir build && cd build && \
-    ../configure --disable-multilib --enable-languages=c,c++ && \
+    mkdir -p /usr/local/gcc-build && \
+    cd /usr/local/gcc-build && \
+    /usr/local/gcc-src/configure --prefix=/usr/local/gcc --disable-multilib --enable-languages=c,c++ && \
     make -j$(nproc) && \
     make install && \
-    ln -s /usr/local/bin/g++ /usr/local/bin/g++-13 && \
-    ln -s /usr/local/bin/gcc /usr/local/bin/gcc-13 && \
-    rm -rf /tmp/gcc.tar.gz /usr/src/gcc && \
-    g++-13 --version && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    ln -s /usr/local/gcc/bin/g++ /usr/local/bin/g++-13 && \
+    ln -s /usr/local/gcc/bin/gcc /usr/local/bin/gcc-13 && \
+    rm -rf /tmp/gcc
