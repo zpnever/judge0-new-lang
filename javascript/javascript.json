@@ -1,8 +1,8 @@
 [
-	{
-		"name": "JavaScript (Node.js 20)",
-		"source_file": "main.js",
-		"run_cmd": "node main.js",
-		"is_archived": false
-	}
+  {
+    "name": "JavaScript (Node.js 20.9.0)",
+    "is_archived": false,
+    "source_file": "script.js",
+    "run_cmd": "/usr/local/bin/node script.js"
+  }
 ]
